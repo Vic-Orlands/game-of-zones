@@ -1,0 +1,45 @@
+// State capitals (approximate centres), drawn on the plate as little engraved towns.
+export const CAPITALS: {
+  state: string;
+  name: string;
+  lon: number;
+  lat: number;
+}[] = [
+  { state: "Abia", name: "Umuahia", lon: 7.49, lat: 5.53 },
+  { state: "Adamawa", name: "Yola", lon: 12.46, lat: 9.21 },
+  { state: "Akwa Ibom", name: "Uyo", lon: 7.93, lat: 5.04 },
+  { state: "Anambra", name: "Awka", lon: 7.07, lat: 6.21 },
+  { state: "Bauchi", name: "Bauchi", lon: 9.84, lat: 10.31 },
+  { state: "Bayelsa", name: "Yenagoa", lon: 6.26, lat: 4.92 },
+  { state: "Benue", name: "Makurdi", lon: 8.54, lat: 7.73 },
+  { state: "Borno", name: "Maiduguri", lon: 13.15, lat: 11.83 },
+  { state: "Cross River", name: "Calabar", lon: 8.32, lat: 4.96 },
+  { state: "Delta", name: "Asaba", lon: 6.73, lat: 6.2 },
+  { state: "Ebonyi", name: "Abakaliki", lon: 8.11, lat: 6.32 },
+  { state: "Edo", name: "Benin City", lon: 5.63, lat: 6.34 },
+  { state: "Ekiti", name: "Ado-Ekiti", lon: 5.22, lat: 7.62 },
+  { state: "Enugu", name: "Enugu", lon: 7.5, lat: 6.44 },
+  { state: "Gombe", name: "Gombe", lon: 11.17, lat: 10.29 },
+  { state: "Imo", name: "Owerri", lon: 7.03, lat: 5.48 },
+  { state: "Jigawa", name: "Dutse", lon: 9.34, lat: 11.76 },
+  { state: "Kaduna", name: "Kaduna", lon: 7.44, lat: 10.52 },
+  { state: "Kano", name: "Kano", lon: 8.52, lat: 12.0 },
+  { state: "Katsina", name: "Katsina", lon: 7.6, lat: 12.99 },
+  { state: "Kebbi", name: "Birnin Kebbi", lon: 4.2, lat: 12.45 },
+  { state: "Kogi", name: "Lokoja", lon: 6.74, lat: 7.8 },
+  { state: "Kwara", name: "Ilorin", lon: 4.55, lat: 8.5 },
+  { state: "Lagos", name: "Ikeja", lon: 3.35, lat: 6.6 },
+  { state: "Nasarawa", name: "Lafia", lon: 8.52, lat: 8.49 },
+  { state: "Niger", name: "Minna", lon: 6.56, lat: 9.61 },
+  { state: "Ogun", name: "Abeokuta", lon: 3.35, lat: 7.15 },
+  { state: "Ondo", name: "Akure", lon: 5.19, lat: 7.25 },
+  { state: "Osun", name: "Osogbo", lon: 4.56, lat: 7.77 },
+  { state: "Oyo", name: "Ibadan", lon: 3.9, lat: 7.38 },
+  { state: "Plateau", name: "Jos", lon: 8.89, lat: 9.9 },
+  { state: "Rivers", name: "Port Harcourt", lon: 7.01, lat: 4.82 },
+  { state: "Sokoto", name: "Sokoto", lon: 5.24, lat: 13.06 },
+  { state: "Taraba", name: "Jalingo", lon: 11.36, lat: 8.89 },
+  { state: "Yobe", name: "Damaturu", lon: 11.96, lat: 11.75 },
+  { state: "Zamfara", name: "Gusau", lon: 6.66, lat: 12.17 },
+  { state: "Abuja", name: "Abuja", lon: 7.49, lat: 9.06 },
+];

@@ -1,0 +1,324 @@
+{
+ "bbox": [
+  2.55,
+  14.8,
+  4.05,
+  14.05
+ ],
+ "cosLat": 0.9876883405951378,
+ "grid": [
+  768,
+  635
+ ],
+ "tex": [
+  2048,
+  1693
+ ],
+ "zoneIds": {
+  "NW": 1,
+  "NE": 2,
+  "NC": 3,
+  "SW": 4,
+  "SE": 5,
+  "SS": 6,
+  "FCT": 7
+ },
+ "states": [
+  {
+   "id": 1,
+   "name": "Abia",
+   "zone": "SE",
+   "lon": 7.525,
+   "lat": 5.453
+  },
+  {
+   "id": 2,
+   "name": "Abuja",
+   "zone": "FCT",
+   "lon": 7.186,
+   "lat": 8.894
+  },
+  {
+   "id": 3,
+   "name": "Adamawa",
+   "zone": "NE",
+   "lon": 12.406,
+   "lat": 9.314
+  },
+  {
+   "id": 4,
+   "name": "Akwa Ibom",
+   "zone": "SS",
+   "lon": 7.855,
+   "lat": 4.906
+  },
+  {
+   "id": 5,
+   "name": "Anambra",
+   "zone": "SE",
+   "lon": 6.932,
+   "lat": 6.215
+  },
+  {
+   "id": 6,
+   "name": "Bauchi",
+   "zone": "NE",
+   "lon": 10.0,
+   "lat": 10.777
+  },
+  {
+   "id": 7,
+   "name": "Bayelsa",
+   "zone": "SS",
+   "lon": 6.069,
+   "lat": 4.772
+  },
+  {
+   "id": 8,
+   "name": "Benue",
+   "zone": "NC",
+   "lon": 8.738,
+   "lat": 7.336
+  },
+  {
+   "id": 9,
+   "name": "Borno",
+   "zone": "NE",
+   "lon": 13.161,
+   "lat": 11.894
+  },
+  {
+   "id": 10,
+   "name": "Cross River",
+   "zone": "SS",
+   "lon": 8.602,
+   "lat": 5.873
+  },
+  {
+   "id": 11,
+   "name": "Delta",
+   "zone": "SS",
+   "lon": 5.937,
+   "lat": 5.706
+  },
+  {
+   "id": 12,
+   "name": "Ebonyi",
+   "zone": "SE",
+   "lon": 8.014,
+   "lat": 6.265
+  },
+  {
+   "id": 13,
+   "name": "Edo",
+   "zone": "SS",
+   "lon": 5.931,
+   "lat": 6.634
+  },
+  {
+   "id": 14,
+   "name": "Ekiti",
+   "zone": "SW",
+   "lon": 5.311,
+   "lat": 7.719
+  },
+  {
+   "id": 15,
+   "name": "Enugu",
+   "zone": "SE",
+   "lon": 7.436,
+   "lat": 6.537
+  },
+  {
+   "id": 16,
+   "name": "Gombe",
+   "zone": "NE",
+   "lon": 11.194,
+   "lat": 10.365
+  },
+  {
+   "id": 17,
+   "name": "Imo",
+   "zone": "SE",
+   "lon": 7.061,
+   "lat": 5.571
+  },
+  {
+   "id": 18,
+   "name": "Jigawa",
+   "zone": "NW",
+   "lon": 9.561,
+   "lat": 12.229
+  },
+  {
+   "id": 19,
+   "name": "Kaduna",
+   "zone": "NW",
+   "lon": 7.709,
+   "lat": 10.377
+  },
+  {
+   "id": 20,
+   "name": "Kano",
+   "zone": "NW",
+   "lon": 8.524,
+   "lat": 11.748
+  },
+  {
+   "id": 21,
+   "name": "Katsina",
+   "zone": "NW",
+   "lon": 7.638,
+   "lat": 12.388
+  },
+  {
+   "id": 22,
+   "name": "Kebbi",
+   "zone": "NW",
+   "lon": 4.511,
+   "lat": 11.718
+  },
+  {
+   "id": 23,
+   "name": "Kogi",
+   "zone": "NC",
+   "lon": 6.686,
+   "lat": 7.736
+  },
+  {
+   "id": 24,
+   "name": "Kwara",
+   "zone": "NC",
+   "lon": 4.392,
+   "lat": 8.962
+  },
+  {
+   "id": 25,
+   "name": "Lagos",
+   "zone": "SW",
+   "lon": 3.601,
+   "lat": 6.522
+  },
+  {
+   "id": 26,
+   "name": "Nasarawa",
+   "zone": "NC",
+   "lon": 8.2,
+   "lat": 8.5
+  },
+  {
+   "id": 27,
+   "name": "Niger",
+   "zone": "NC",
+   "lon": 5.6,
+   "lat": 9.93
+  },
+  {
+   "id": 28,
+   "name": "Ogun",
+   "zone": "SW",
+   "lon": 3.469,
+   "lat": 6.996
+  },
+  {
+   "id": 29,
+   "name": "Ondo",
+   "zone": "SW",
+   "lon": 5.148,
+   "lat": 6.914
+  },
+  {
+   "id": 30,
+   "name": "Osun",
+   "zone": "SW",
+   "lon": 4.519,
+   "lat": 7.563
+  },
+  {
+   "id": 31,
+   "name": "Oyo",
+   "zone": "SW",
+   "lon": 3.614,
+   "lat": 8.158
+  },
+  {
+   "id": 32,
+   "name": "Plateau",
+   "zone": "NC",
+   "lon": 9.518,
+   "lat": 9.218
+  },
+  {
+   "id": 33,
+   "name": "Rivers",
+   "zone": "SS",
+   "lon": 6.911,
+   "lat": 4.842
+  },
+  {
+   "id": 34,
+   "name": "Sokoto",
+   "zone": "NW",
+   "lon": 5.318,
+   "lat": 13.057
+  },
+  {
+   "id": 35,
+   "name": "Taraba",
+   "zone": "NE",
+   "lon": 10.775,
+   "lat": 7.991
+  },
+  {
+   "id": 36,
+   "name": "Yobe",
+   "zone": "NE",
+   "lon": 11.43,
+   "lat": 12.301
+  },
+  {
+   "id": 37,
+   "name": "Zamfara",
+   "zone": "NW",
+   "lon": 6.223,
+   "lat": 12.121
+  }
+ ],
+ "seats": {
+  "NW": {
+   "name": "Kano",
+   "lon": 8.592,
+   "lat": 12.002
+  },
+  "NE": {
+   "name": "Maiduguri",
+   "lon": 13.151,
+   "lat": 11.831
+  },
+  "NC": {
+   "name": "Lokoja",
+   "lon": 6.733,
+   "lat": 7.802
+  },
+  "SW": {
+   "name": "Ibadan",
+   "lon": 3.947,
+   "lat": 7.378
+  },
+  "SE": {
+   "name": "Enugu",
+   "lon": 7.546,
+   "lat": 6.458
+  },
+  "SS": {
+   "name": "Benin City",
+   "lon": 5.604,
+   "lat": 6.335
+  },
+  "FCT": {
+   "name": "Aso Rock",
+   "lon": 7.534,
+   "lat": 9.083
+  }
+ }
+}
