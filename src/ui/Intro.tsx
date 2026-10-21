@@ -6,6 +6,7 @@ import { store } from "../state";
 import { Scramble } from "./Scramble";
 import { textureWipe } from "./wipe";
 import { ThemeToggle } from "./ThemeToggle";
+import { isShort, isTouch } from "../layout";
 
 const houseName = (z: string) =>
   z === "FCT" ? "The Seat" : (HOUSES.find((h) => h.id === z)?.house ?? "");
@@ -138,6 +139,8 @@ export function Intro() {
   const [leaving, setLeaving] = useState(false);
   const [hold, setHold] = useState(false);
   const dim = useRef<HTMLDivElement>(null);
+  const scroller = useRef<HTMLDivElement>(null);
+  const enterWrap = useRef<HTMLDivElement>(null);
   const root = useRef<HTMLDivElement>(null);
   const qRef = useRef<HTMLHeadingElement>(null);
   const fx = useRef<HTMLDivElement>(null);
@@ -158,13 +161,23 @@ export function Intro() {
   useEffect(() => {
     const p = { x: -400, y: -400 };
     const c = { x: -400, y: -400 };
+    // on a touch screen there's no pointer to follow, so the light wanders on its own until a finger moves
+    const touch = isTouch();
+    let lastTouch = -1e9;
     const move = (e: PointerEvent) => {
       p.x = e.clientX;
       p.y = e.clientY;
+      if (e.pointerType !== "mouse") lastTouch = performance.now();
     };
     window.addEventListener("pointermove", move, { passive: true });
     let raf = 0;
-    const tick = () => {
+    const tick = (now: number) => {
+      if (touch && now - lastTouch > 2500) {
+        const t = now / 1000;
+        p.x =
+          innerWidth * (0.5 + 0.38 * Math.sin(t * 0.31) * Math.cos(t * 0.13));
+        p.y = innerHeight * (0.55 + 0.34 * Math.sin(t * 0.23 + 1.2));
+      }
       c.x += (p.x - c.x) * 0.18;
       c.y += (p.y - c.y) * 0.18;
       dim.current?.style.setProperty("--mx", `${c.x.toFixed(1)}px`);
@@ -180,6 +193,18 @@ export function Intro() {
 
   const right = picked !== null && picked === q.answer;
   const answered = picked !== null;
+
+  // on a short screen the verdict and Enter fall below the fold: bring them up once they've appeared
+  useEffect(() => {
+    if (!answered) return;
+    const sc = scroller.current;
+    if (!sc || sc.scrollHeight <= sc.clientHeight + 4) return;
+    const id = window.setTimeout(
+      () => sc.scrollTo({ top: sc.scrollHeight, behavior: "smooth" }),
+      right ? 1400 : 1900,
+    );
+    return () => clearTimeout(id);
+  }, [answered, right]);
 
   // the fun: letters hop, paper flies, a seal comes down
   useLayoutEffect(() => {
@@ -254,15 +279,12 @@ export function Intro() {
           });
           const st = fx.current.querySelector(".stamp") as HTMLElement;
           const qb = qRef.current!.getBoundingClientRect();
-          // beside the question on wide screens; small, in the corner above it on phones
-          const narrow = window.innerWidth < 760;
+          // beside the question on wide screens; small, tucked into the lower right corner on phones
+          const narrow = innerWidth < 900 || isShort();
           gsap.set(
             st,
             narrow
-              ? {
-                  left: window.innerWidth - 150,
-                  top: Math.max(8, qb.top - 150),
-                }
+              ? { left: innerWidth - 146, top: innerHeight - 250 }
               : {
                   left: Math.min(window.innerWidth - 190, qb.right - 60),
                   top: qb.bottom - 10,
@@ -272,7 +294,7 @@ export function Intro() {
             st,
             { scale: 2.6, rotation: -40, opacity: 0 },
             {
-              scale: narrow ? 0.6 : 1,
+              scale: narrow ? 0.55 : 1,
               rotation: -14,
               opacity: 0.92,
               duration: 0.42,
@@ -351,136 +373,141 @@ export function Intro() {
       <div className="intro-tools">
         <ThemeToggle />
       </div>
-      <div className="brand">
-        {stage >= 1 && (
-          <>
-            <div className="over rise">Six Houses · One Seat</div>
-            <h1>
-              <Scramble text="The Game of Zones" />
-            </h1>
-            <div className="under rise" style={{ animationDelay: "0.8s" }}>
-              a map of Nigeria
-            </div>
-          </>
-        )}
-      </div>
+      <div className="intro-scroll" ref={scroller}>
+        <div className="brand">
+          {stage >= 1 && (
+            <>
+              <div className="over rise">Six Houses · One Seat</div>
+              <h1>
+                <Scramble text="The Game of Zones" />
+              </h1>
+              <div className="under rise" style={{ animationDelay: "0.8s" }}>
+                a map of Nigeria
+              </div>
+            </>
+          )}
+        </div>
 
-      <div
-        className={
-          "quiz" +
-          (answered ? (right ? " answered right" : " answered wrong") : "")
-        }
-        key={q.q}
-      >
-        {stage >= 2 && (
-          <>
-            <div className="ask rise">
-              Before you enter — a question of the realm
-            </div>
-            <h2 className="q" ref={qRef}>
-              <Scramble text={q.q} speed={1.5} />
-            </h2>
-            <div
-              className={"opts" + (answered ? " answered" : "")}
-              onPointerEnter={() => setHold(true)}
-              onPointerLeave={() => setHold(false)}
-            >
-              {stage >= 3 &&
-                q.options.map((o, i) => (
-                  <button
-                    key={o}
-                    ref={(el) => {
-                      optRefs.current[i] = el;
-                    }}
-                    className={
-                      "opt rise" +
-                      (picked === i ? " picked" : "") +
-                      (answered && i === q.answer ? " right" : "") +
-                      (answered && picked === i && i !== q.answer ? " no" : "")
-                    }
-                    style={{ animationDelay: `${i * 0.09}s` }}
-                    onClick={() => !answered && setPicked(i)}
-                    data-right={
-                      import.meta.env.DEV && i === q.answer ? "" : undefined
-                    }
-                    data-hot
-                  >
-                    <span className="n">{"ABCD"[i]}</span>
-                    {o}
-                    <span className="strike" />
-                    {answered && !right && i === q.answer && (
-                      <svg
-                        className="swash"
-                        viewBox="0 0 120 16"
-                        preserveAspectRatio="none"
-                      >
-                        <path d="M2 10 C 30 4, 60 14, 90 7 S 116 6, 118 9" />
-                      </svg>
-                    )}
-                  </button>
-                ))}
-            </div>
-            {stage >= 3 && !answered && (
+        <div
+          className={
+            "quiz" +
+            (answered ? (right ? " answered right" : " answered wrong") : "")
+          }
+          key={q.q}
+        >
+          {stage >= 2 && (
+            <>
+              <div className="ask rise">
+                Before you enter — a question of the realm
+              </div>
+              <h2 className="q" ref={qRef}>
+                <Scramble text={q.q} speed={1.5} />
+              </h2>
               <div
-                className="turn"
-                aria-hidden
-                style={{ animationPlayState: hold ? "paused" : "running" }}
-                onAnimationEnd={rotate}
-              />
-            )}
-            <div className="verdict">
-              {answered && (
-                <>
-                  <div
-                    className="v rise"
-                    style={{
-                      color: right ? "var(--accent)" : "#9e3b32",
-                      animationDelay: right ? "0.2s" : "0.9s",
-                    }}
-                  >
-                    {right ? "Correct" : "Not quite"}
-                  </div>
-                  <div
-                    className="note rise"
-                    style={{ animationDelay: right ? "0.45s" : "1.15s" }}
-                  >
-                    {right
-                      ? `${houseName(q.zone)} takes note. `
-                      : `It is ${q.options[q.answer]}. `}
-                    {q.note}
-                  </div>
-                </>
+                className={"opts" + (answered ? " answered" : "")}
+                onPointerEnter={() => setHold(true)}
+                onPointerLeave={() => setHold(false)}
+              >
+                {stage >= 3 &&
+                  q.options.map((o, i) => (
+                    <button
+                      key={o}
+                      ref={(el) => {
+                        optRefs.current[i] = el;
+                      }}
+                      className={
+                        "opt rise" +
+                        (picked === i ? " picked" : "") +
+                        (answered && i === q.answer ? " right" : "") +
+                        (answered && picked === i && i !== q.answer
+                          ? " no"
+                          : "")
+                      }
+                      style={{ animationDelay: `${i * 0.09}s` }}
+                      onClick={() => !answered && setPicked(i)}
+                      data-right={
+                        import.meta.env.DEV && i === q.answer ? "" : undefined
+                      }
+                      data-hot
+                    >
+                      <span className="n">{"ABCD"[i]}</span>
+                      {o}
+                      <span className="strike" />
+                      {answered && !right && i === q.answer && (
+                        <svg
+                          className="swash"
+                          viewBox="0 0 120 16"
+                          preserveAspectRatio="none"
+                        >
+                          <path d="M2 10 C 30 4, 60 14, 90 7 S 116 6, 118 9" />
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+              </div>
+              {stage >= 3 && !answered && (
+                <div
+                  className="turn"
+                  aria-hidden
+                  style={{ animationPlayState: hold ? "paused" : "running" }}
+                  onAnimationEnd={rotate}
+                />
               )}
-            </div>
-          </>
-        )}
-      </div>
+              <div className="verdict">
+                {answered && (
+                  <>
+                    <div
+                      className="v rise"
+                      style={{
+                        color: right ? "var(--accent)" : "#9e3b32",
+                        animationDelay: right ? "0.2s" : "0.9s",
+                      }}
+                    >
+                      {right ? "Correct" : "Not quite"}
+                    </div>
+                    <div
+                      className="note rise"
+                      style={{ animationDelay: right ? "0.45s" : "1.15s" }}
+                    >
+                      {right
+                        ? `${houseName(q.zone)} takes note. `
+                        : `It is ${q.options[q.answer]}. `}
+                      {q.note}
+                    </div>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </div>
 
-      <div
-        className="enter-wrap"
-        style={{ alignSelf: "end", display: "grid", justifyItems: "center" }}
-      >
-        {answered && (
-          <>
-            <button
-              className="enter rise"
-              style={{ animationDelay: right ? "1.1s" : "1.6s" }}
-              onClick={enter}
-              data-hot
-            >
-              <Rose className="rose" />
-              Enter
-            </button>
-            <button
-              className="again rise"
-              style={{ animationDelay: right ? "1.3s" : "1.8s" }}
-              onClick={another}
-              data-hot
-            >
-              ask me another
-            </button>
-          </>
-        )}
+        <div
+          className="enter-wrap"
+          ref={enterWrap}
+          style={{ alignSelf: "end", display: "grid", justifyItems: "center" }}
+        >
+          {answered && (
+            <>
+              <button
+                className="enter rise"
+                style={{ animationDelay: right ? "1.1s" : "1.6s" }}
+                onClick={enter}
+                data-hot
+              >
+                <Rose className="rose" />
+                Enter
+              </button>
+              <button
+                className="again rise"
+                style={{ animationDelay: right ? "1.3s" : "1.8s" }}
+                onClick={another}
+                data-hot
+              >
+                ask me another
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       <div ref={fx} className="confetti" aria-hidden>

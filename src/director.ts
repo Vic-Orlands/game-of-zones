@@ -3,6 +3,7 @@ import { store } from "./state";
 import { flyTo, rig, VIEWS } from "./gl/rig";
 import { fx } from "./gl/World";
 import { HOUSES, THRONE, type SeatId } from "./data/houses";
+import { isSheet, onViewportChange, sidePanelWidth } from "./layout";
 
 // Every camera move and plate effect hangs off store changes, so buttons, the strip, clicks on the map and
 // the keyboard all go through the same doors.
@@ -46,16 +47,33 @@ export function select(id: SeatId | null) {
   rig.drift = 0.5;
 }
 
-/** Open or close the House panel; the picture slides aside to keep the sigil in view. */
-export function setPanel(open: boolean) {
-  store.setState({ panel: open });
-  const wide = window.innerWidth > 760;
+/**
+ * Slide the picture so the sigil stays in the open part of the screen: left of a side panel, or above a
+ * bottom sheet.
+ */
+function frameForPanel(open: boolean, duration = 1.4) {
+  const sheet = isSheet();
   gsap.to(rig, {
-    shift: open && wide ? 0.16 : 0,
-    shiftY: open && !wide ? 0.22 : 0,
-    duration: 1.4,
+    shift: open && !sheet ? (sidePanelWidth() / innerWidth) * 0.5 : 0,
+    shiftY: open && sheet ? 0.24 : 0,
+    duration,
     ease: "power3.inOut",
   });
+}
+
+/** Open or close the House panel. */
+export function setPanel(open: boolean) {
+  store.setState({ panel: open });
+  frameForPanel(open);
+}
+
+/** After a rotation or resize: re-fit the overview / plate to the new shape and re-frame the panel. */
+function refit() {
+  const s = store.getState();
+  if (s.phase !== "map") return;
+  if (s.view === "aerial") flyTo(VIEWS.aerial(), { duration: 1.2, hop: 0 });
+  else if (s.view === "plate") flyTo(VIEWS.plate(), { duration: 1.2, hop: 0 });
+  frameForPanel(s.view === "zone" && s.panel, 0.8);
 }
 
 export function togglePlate() {
@@ -73,6 +91,11 @@ export function togglePlate() {
 }
 
 export function startDirector() {
+  let t = 0;
+  onViewportChange(() => {
+    clearTimeout(t);
+    t = window.setTimeout(refit, 250);
+  });
   rig.cur = VIEWS.intro();
   rig.spin = 0.02;
   window.addEventListener("goz:select", (e) => {

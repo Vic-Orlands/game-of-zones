@@ -316,8 +316,29 @@ function Controls() {
         at: best ? null : at,
       };
     };
+    // every finger on the glass, for pinch-to-zoom
+    const touches = new Map<number, { x: number; y: number }>();
+    let pinch0 = 0;
+    let zoom0 = 1;
+    const spread = () => {
+      const [a, b] = [...touches.values()];
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    };
     const onMove = (e: PointerEvent) => {
       const s = store.getState();
+      if (touches.has(e.pointerId))
+        touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (touches.size === 2) {
+        // two fingers: zoom only (a tap is out of the question now)
+        if (down) down.moved = 1e9;
+        if (pinch0 > 0 && s.phase === "map")
+          rig.userT.zoom = THREE.MathUtils.clamp(
+            (zoom0 * pinch0) / Math.max(1, spread()),
+            0.35,
+            1.6,
+          );
+        return;
+      }
       if (down) {
         const dx = e.clientX - down.x;
         const dy = e.clientY - down.y;
@@ -342,14 +363,26 @@ function Controls() {
     };
     const onDown = (e: PointerEvent) => {
       if (e.button !== 0) return;
+      if (e.pointerType === "touch") {
+        touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (touches.size === 2) {
+          pinch0 = spread();
+          zoom0 = rig.userT.zoom;
+          return;
+        }
+      }
       down = { x: e.clientX, y: e.clientY, moved: 0, id: e.pointerId };
       el.setPointerCapture?.(e.pointerId);
     };
     const onUp = (e: PointerEvent) => {
+      touches.delete(e.pointerId);
+      if (touches.size < 2) pinch0 = 0;
+      if (down && down.id !== e.pointerId) return;
       const d = down;
       down = null;
       el.style.cursor = "";
-      if (!d || d.moved > 6) return;
+      // a fingertip wobbles more than a mouse, so a touch tap tolerates a little more travel
+      if (!d || d.moved > (e.pointerType === "touch" ? 14 : 6)) return;
       const s = store.getState();
       if (s.phase !== "map") return;
       const p = pick(e.clientX, e.clientY);
@@ -379,12 +412,14 @@ function Controls() {
     el.addEventListener("pointermove", onMove);
     el.addEventListener("pointerdown", onDown);
     el.addEventListener("pointerup", onUp);
+    el.addEventListener("pointercancel", onUp);
     el.addEventListener("pointerleave", onLeave);
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => {
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerdown", onDown);
       el.removeEventListener("pointerup", onUp);
+      el.removeEventListener("pointercancel", onUp);
       el.removeEventListener("pointerleave", onLeave);
       el.removeEventListener("wheel", onWheel);
     };

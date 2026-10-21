@@ -42,18 +42,21 @@ const fitWidth = (base: number, k = 1) =>
       (2 * Math.tan((16 * Math.PI) / 180) * (innerWidth / innerHeight)),
   );
 
+const portrait = () => innerWidth < innerHeight;
+
 export const VIEWS = {
+  // on a portrait phone the country is seen more from above and fills the width edge to edge
   aerial: (): RigState => ({
-    tx: 0.25,
-    tz: 0.9,
-    dist: fitWidth(14.5, 0.95),
-    polar: innerWidth < innerHeight ? 0.6 : 0.86,
+    tx: portrait() ? 0.05 : 0.25,
+    tz: portrait() ? 0.35 : 0.9,
+    dist: portrait() ? fitWidth(6, 1.02) : fitWidth(14.5, 0.95),
+    polar: portrait() ? 0.42 : 0.86,
     az: 0,
   }),
   plate: (): RigState => ({
     tx: 0.0,
     tz: -0.3,
-    dist: fitWidth(19.5),
+    dist: portrait() ? fitWidth(8, 1.06) : fitWidth(19.5),
     polar: 0.0001,
     az: 0,
   }),

@@ -17,6 +17,7 @@ import { Scramble } from "./Scramble";
 import { Credits } from "./Credits";
 import { textureWipe } from "./wipe";
 import { ThemeToggle } from "./ThemeToggle";
+import { onViewportChange } from "../layout";
 import { AerialIcon, BarsIcon, CloseIcon, MapIcon } from "./icons";
 
 const SEAT_IDS: SeatId[] = ["NW", "NE", "NC", "SW", "SE", "SS", "FCT"];
@@ -40,21 +41,51 @@ function Labels() {
       : selected === "FCT"
         ? ["Abuja"]
         : [];
-  const roomy = window.innerWidth > 760;
   const states =
-    view === "plate" && roomy
+    view === "plate"
       ? geo.meta.states.map((s) => s.name)
       : view === "zone" && panel
         ? zoneStates
         : [];
 
   useEffect(() => {
+    // each label's box relative to its anchor, measured once (and again after a resize)
+    const boxes = new WeakMap<
+      HTMLElement,
+      { x: number; y: number; w: number; h: number }
+    >();
+    const measure = (el: HTMLDivElement) => {
+      let b = boxes.get(el);
+      if (b) return b;
+      const span = el.firstElementChild as HTMLElement;
+      const r = span.getBoundingClientRect();
+      const o = el.getBoundingClientRect();
+      b = { x: r.left - o.left, y: r.top - o.top, w: r.width, h: r.height };
+      if (b.w > 0) boxes.set(el, b);
+      return b;
+    };
+    const forget = onViewportChange(() => {
+      for (const el of refs.current.values()) boxes.delete(el);
+    });
+    // seats, then the hovered state, then states, then the neighbours and waters
+    const rank = (k: string) =>
+      k.startsWith("g:") ? 0 : k.startsWith("s:") ? 1 : 2;
     let raf = 0;
+    const placed: { x0: number; y0: number; x1: number; y1: number }[] = [];
     const tick = () => {
       // keep lettering off the chosen sigil
-      const sel = store.getState().selected;
+      const st = store.getState();
+      const sel = st.selected;
       const sig = sel ? anchors.get("m:" + sel) : undefined;
-      for (const [k, el] of refs.current) {
+      const keys = [...refs.current.keys()].sort(
+        (a, b) =>
+          rank(a) - rank(b) ||
+          (b === "s:" + st.hoverState ? 1 : 0) -
+            (a === "s:" + st.hoverState ? 1 : 0),
+      );
+      placed.length = 0;
+      for (const k of keys) {
+        const el = refs.current.get(k)!;
         const a = anchors.get(k);
         if (!a) continue;
         el.style.transform = `translate3d(${a.x.toFixed(1)}px, ${a.y.toFixed(1)}px, 0)`;
@@ -62,12 +93,33 @@ function Labels() {
           !!sig &&
           k.startsWith("s:") &&
           Math.hypot(a.x - sig.x, a.y - sig.y) < 130;
-        el.style.visibility = a.visible && !onSigil ? "visible" : "hidden";
+        let show = a.visible && !onSigil;
+        if (show) {
+          // a label that would collide with one already placed is left off this frame
+          const b = measure(el);
+          const r = {
+            x0: a.x + b.x - 4,
+            y0: a.y + b.y - 2,
+            x1: a.x + b.x + b.w + 4,
+            y1: a.y + b.y + b.h + 2,
+          };
+          if (
+            placed.some(
+              (p) => r.x0 < p.x1 && r.x1 > p.x0 && r.y0 < p.y1 && r.y1 > p.y0,
+            )
+          )
+            show = false;
+          else placed.push(r);
+        }
+        el.style.visibility = show ? "visible" : "hidden";
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      forget();
+    };
   }, []);
 
   const reg = (k: string) => (el: HTMLDivElement | null) => {
