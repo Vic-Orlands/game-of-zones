@@ -1804,3 +1804,196 @@ a {
     display: none;
   }
 }
+
+/* ================================================================ compact type on small screens
+   A phone is held close: everything reads a size or two smaller than on a desk, and wide-tracked caps
+   are tightened so lines don't stack into tall blocks. Tap targets keep their size through padding. */
+@media (max-width: 600px), (max-height: 560px) {
+  .loader .pct {
+    font-size: 64px;
+  }
+  .loader .step {
+    font-size: 14px;
+  }
+  .loader .kicker,
+  .loader .ticks {
+    font-size: 8px;
+  }
+  .brand .over {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+  }
+  .brand h1 {
+    font-size: 21px;
+  }
+  .brand .under {
+    font-size: 12px;
+  }
+  .quiz {
+    gap: 18px;
+  }
+  .quiz .ask {
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+  }
+  .quiz .q {
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    line-height: 1.55;
+  }
+  .opts {
+    gap: 2px 22px;
+    min-height: 40px;
+  }
+  .opt {
+    font-size: 16px;
+    padding: 10px 4px;
+  }
+  .opt .n {
+    font-size: 8px;
+    left: -12px;
+    top: 10px;
+  }
+  .verdict .v {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+  }
+  .verdict .note {
+    font-size: 14px;
+  }
+  .enter {
+    font-size: 17px;
+    gap: 8px;
+  }
+  .enter .rose {
+    width: 40px;
+    height: 40px;
+  }
+  .again {
+    font-size: 13px;
+    padding: 10px 6px;
+  }
+  .hover-title .z,
+  .zone-title .z {
+    font-size: 9px;
+    letter-spacing: 0.34em;
+  }
+  .hover-title .h,
+  .zone-title .h {
+    font-size: 22px;
+    letter-spacing: 0.1em;
+    padding-left: 0.1em;
+  }
+  .hover-title .w {
+    font-size: 14px;
+  }
+  .discover .plate {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    padding: 12px 18px 12px 22px;
+    gap: 10px;
+  }
+  .discover .plate svg {
+    width: 20px;
+  }
+  .back {
+    font-size: 14px;
+  }
+  .tool {
+    width: 40px;
+    height: 40px;
+  }
+  .tool svg {
+    width: 24px;
+    height: 24px;
+  }
+  .panel .zn {
+    font-size: 8px;
+    letter-spacing: 0.3em;
+  }
+  .panel h2 {
+    font-size: 23px;
+    margin: 6px 0 4px;
+  }
+  .panel .words {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .panel p,
+  .facts li,
+  .peoples {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .panel h3 {
+    font-size: 8px;
+    margin: 18px 0 8px;
+  }
+  .states button {
+    font-size: 12px;
+    padding: 6px 0;
+  }
+  .panel .fine {
+    font-size: 11px;
+  }
+  .pact button {
+    font-size: 14px;
+    padding: 9px 0;
+  }
+  .tally .verdict-line {
+    font-size: 15px;
+  }
+  .menu-list {
+    gap: 4px;
+  }
+  .menu-list button {
+    font-size: 21px;
+    letter-spacing: 0.12em;
+    padding: 4px 0 4px 0.12em;
+  }
+  .menu-list button small {
+    font-size: 12px;
+  }
+  .menu-houses {
+    gap: 2px 14px;
+    margin: 0 0 8px;
+  }
+  .menu-houses button {
+    font-size: 14px;
+    padding: 6px 2px;
+  }
+  .credits {
+    font-size: 14px;
+  }
+  .credits h2 {
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+  .credits h3 {
+    font-size: 8px;
+    margin-top: 18px;
+  }
+  .lbl.seat span {
+    font-size: 8px;
+    letter-spacing: 0.22em;
+  }
+  .lbl.state span {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+  .lbl.land span {
+    font-size: 9px;
+    letter-spacing: 0.32em;
+  }
+  .lbl.water span,
+  .lbl.river span {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  .gl-error h2 {
+    font-size: 24px;
+  }
+  .gl-error p {
+    font-size: 15px;
+  }
+}
