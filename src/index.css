@@ -1029,6 +1029,8 @@ a {
   display: flex;
   overflow-y: auto;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   padding: calc(env(safe-area-inset-top) + 72px) 20px
     calc(env(safe-area-inset-bottom) + 40px);
   animation: fade 0.6s var(--ease) both;
