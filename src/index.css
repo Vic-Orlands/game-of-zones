@@ -382,8 +382,8 @@ a {
 }
 .quiz .ask {
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.42em;
+  font-size: 11px;
+  letter-spacing: 0.22em;
   color: var(--accent);
   text-transform: uppercase;
 }
@@ -568,7 +568,7 @@ a {
   color: var(--ink-3);
 }
 .again {
-  margin-top: 6px;
+  margin-top: 10px;
   font-family: var(--serif);
   font-style: italic;
   font-size: 15px;

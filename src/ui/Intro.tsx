@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { QUESTIONS, type Question } from "../data/quiz";
-import { HOUSES, THRONE } from "../data/houses";
+import { HOUSES } from "../data/houses";
 import { store } from "../state";
 import { Scramble } from "./Scramble";
 import { textureWipe } from "./wipe";
@@ -470,7 +470,6 @@ export function Intro() {
             >
               <Rose className="rose" />
               Enter
-              <small>{THRONE.seat.name.toUpperCase()} AWAITS</small>
             </button>
             <button
               className="again rise"

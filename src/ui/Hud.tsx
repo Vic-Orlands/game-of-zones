@@ -17,6 +17,7 @@ import { Scramble } from "./Scramble";
 import { Credits } from "./Credits";
 import { textureWipe } from "./wipe";
 import { ThemeToggle } from "./ThemeToggle";
+import { AerialIcon, BarsIcon, MapIcon } from "./icons";
 
 const SEAT_IDS: SeatId[] = ["NW", "NE", "NC", "SW", "SE", "SS", "FCT"];
 const nameOf = (id: SeatId) =>
@@ -364,38 +365,6 @@ function Panel() {
     </aside>
   );
 }
-
-const ICON = {
-  width: 30,
-  height: 30,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 1.2,
-  strokeLinejoin: "round" as const,
-  strokeLinecap: "round" as const,
-  "aria-hidden": true,
-};
-/** a folded map — lay the plate flat */
-const MapIcon = () => (
-  <svg {...ICON}>
-    <path d="M3 6.5 9 4.5l6 2 6-2v13l-6 2-6-2-6 2z" />
-    <path d="M9 4.5v13M15 6.5v13" />
-  </svg>
-);
-/** hills in perspective — back to the aerial view */
-const AerialIcon = () => (
-  <svg {...ICON}>
-    <path d="M2 19 8.5 9.5l3.5 5 3-4 7 8.5z" />
-    <path d="M8.5 9.5 7 12M15 10.5l-1 2" />
-    <circle cx="18" cy="5.5" r="1.6" />
-  </svg>
-);
-const BarsIcon = () => (
-  <svg {...ICON}>
-    <path d="M3 7h18M7 12h14M3 17h18" />
-  </svg>
-);
 
 export function Hud() {
   const view = useStore((s) => s.view);
