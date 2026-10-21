@@ -1,4 +1,5 @@
 import { store } from "../state";
+import { CloseIcon } from "./icons";
 
 const SECTIONS: { h?: string; p: string }[] = [
   {
@@ -39,10 +40,11 @@ export function Credits() {
     <div className="sheet" role="dialog" aria-label="Credits">
       <button
         className="x"
+        aria-label="Close"
         onClick={() => store.setState({ credits: false })}
         data-hot
       >
-        CLOSE ✕
+        <CloseIcon />
       </button>
       <div className="credits fade-down">
         <h2>Credits</h2>

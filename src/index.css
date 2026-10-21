@@ -820,12 +820,8 @@ a {
 }
 .panel .close {
   position: absolute;
-  top: 92px;
-  right: 34px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: var(--ink-2);
+  top: 88px;
+  right: 30px;
 }
 .panel .zn {
   font-family: var(--mono);
@@ -1022,11 +1018,25 @@ a {
 }
 .sheet .x {
   position: absolute;
-  top: 30px;
-  right: 36px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
+  top: 26px;
+  right: 30px;
+}
+/* close: a bold cross */
+.panel .close,
+.sheet .x {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--ink);
+  transition:
+    color 0.3s,
+    transform 0.5s var(--ease);
+}
+.panel .close:hover,
+.sheet .x:hover {
+  color: var(--accent);
+  transform: rotate(90deg);
 }
 .menu-list {
   display: grid;
@@ -1412,7 +1422,7 @@ a {
   height: 46px;
   display: grid;
   place-items: center;
-  color: var(--ink);
+  color: var(--ink-3);
   transition:
     color 0.3s,
     transform 0.4s var(--ease);

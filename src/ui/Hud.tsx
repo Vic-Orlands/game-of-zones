@@ -17,7 +17,7 @@ import { Scramble } from "./Scramble";
 import { Credits } from "./Credits";
 import { textureWipe } from "./wipe";
 import { ThemeToggle } from "./ThemeToggle";
-import { AerialIcon, BarsIcon, MapIcon } from "./icons";
+import { AerialIcon, BarsIcon, CloseIcon, MapIcon } from "./icons";
 
 const SEAT_IDS: SeatId[] = ["NW", "NE", "NC", "SW", "SE", "SS", "FCT"];
 const nameOf = (id: SeatId) =>
@@ -277,10 +277,11 @@ function Menu() {
     <div className="sheet" role="dialog" aria-label="Menu">
       <button
         className="x"
+        aria-label="Close"
         onClick={() => store.setState({ menu: false })}
         data-hot
       >
-        CLOSE ✕
+        <CloseIcon />
       </button>
       <div className="menu-list">
         <button
@@ -358,8 +359,13 @@ function Panel() {
       aria-hidden={!open}
       aria-label={open ? nameOf(last) : undefined}
     >
-      <button className="close" onClick={() => setPanel(false)} data-hot>
-        CLOSE ✕
+      <button
+        className="close"
+        aria-label="Close"
+        onClick={() => setPanel(false)}
+        data-hot
+      >
+        <CloseIcon />
       </button>
       {open && (house ? <HousePanel h={house} /> : <SeatPanel />)}
     </aside>
